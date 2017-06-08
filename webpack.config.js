@@ -1,6 +1,7 @@
 const path = require('path'),
     webpack = require('webpack'),
-    HtmlWebpackPlugin = require('html-webpack-plugin');
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function isWebpackDevServer() {
     return process.argv[1] && !!(/webpack-dev-server/.exec(process.argv[1]));
@@ -84,7 +85,13 @@ module.exports = function (env) {
             }),
             new webpack.optimize.UglifyJsPlugin({
                 sourceMap: false
-            })
+            }),
+            new CopyWebpackPlugin([
+                {
+                    from: 'api/*',
+                    to:   ''
+                }
+            ])
         ],
         devtool:   'source-map',
         devServer: {
