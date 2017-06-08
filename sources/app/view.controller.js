@@ -10,8 +10,8 @@
             $resource('/api/?json=true').query().$promise.then(function (data) {
                 $scope.data = data;
                 for (var i = 0; i < $scope.data.length; i++) {
-                    $scope.data[i].bytesSent = $filter('bytes')($scope.data[i].bytesSent);
-                    $scope.data[i].bytesReceived = $filter('bytes')($scope.data[i].bytesReceived);
+                    $scope.data[i].bytesSentFormatted = $filter('bytes')($scope.data[i].bytesSent);
+                    $scope.data[i].bytesReceivedFormatted = $filter('bytes')($scope.data[i].bytesReceived);
                 }
                 $scope.tableParams = new NgTableParams({
                     sorting: {
