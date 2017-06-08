@@ -81,6 +81,9 @@ module.exports = function (env) {
             new webpack.ProvidePlugin({
                 $:      "jquery",
                 jQuery: "jquery"
+            }),
+            new webpack.optimize.UglifyJsPlugin({
+                sourceMap: false
             })
         ],
         devtool:   'source-map',
