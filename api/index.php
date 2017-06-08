@@ -19,8 +19,8 @@ foreach ($lines as $key => $line) {
     } else if ($start1) {
         $clients[$split[0]]['name'] = $split[0];
         $clients[$split[0]]['ipReal'] = $split[1];
-        $clients[$split[0]]['bytesReceived'] = $split[2];
-        $clients[$split[0]]['bytesSent'] = $split[3];
+        $clients[$split[0]]['bytesReceived'] = intval($split[2]);
+        $clients[$split[0]]['bytesSent'] = intval($split[3]);
         $clients[$split[0]]['connectedSince'] = (new DateTime($split[4]))->format("Y-m-d\TH:i:sO");
     } else if ($start2) {
         $clients[$split[1]]['ipVirtual'] = $split[0];
