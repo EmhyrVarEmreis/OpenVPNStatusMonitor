@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="page-header">
+        <h1>MCHS Gamilon
+            <small>OpenVPN Monitor</small>
+        </h1>
+    </div>
+    <div class="panel-last-row">
+        <div class="col-sm-12">
+            <!--<div loading-container="demo.tableParams.settings().$loading">-->
+            <table ng-table="tableParams" class="table table-bordered table-striped table-condensed">
+                <tr ng-repeat='row in $data'>
+                    <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">
+                        {{row.name}}
+                    </td>
+                    <td data-title="'IP Virtual'" filter="{ipVirtual: 'text'}" sortable="'ipVirtual'">
+                        {{row.ipVirtual}}
+                    </td>
+                    <td data-title="'Bytes Sent'" filter="{bytesSent: 'text'}" sortable="'bytesSent'">
+                        {{row.bytesSent}}
+                    </td>
+                    <td data-title="'Bytes Received'" filter="{bytesReceived: 'text'}" sortable="'bytesReceived'">
+                        {{row.bytesReceived}}
+                    </td>
+                    <td data-title="'IP Real'" filter="{ipReal: 'text'}" sortable="'ipReal'">
+                        {{row.ipReal}}
+                    </td>
+                    <td data-title="'Connected Since'" filter="{connectedSince: 'text'}" sortable="'connectedSince'">
+                        {{row.connectedSince | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </td>
+                    <td data-title="'Last Refresh'" filter="{lastRefresh: 'text'}" sortable="'lastRefresh'">
+                        {{row.lastRefresh | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </td>
+                </tr>
+            </table>
+            <!--</div>-->
+        </div>
+    </div>
+    <div class="panel-last-row">
+        <div class="col-sm-12">
+            <button type="button" class="btn" ng-class="{'btn-success' : !autoReload, 'btn-danger' : autoReload}"
+                    ng-click="toggleAutoReload()">
+                Turn {{autoReload ? 'OFF' : 'ON'}} Auto-Reload
+            </button>
+            <button type="button" class="btn btn-primary" ng-click="reloadData()" ng-hide="autoReload">Reload</button>
+        </div>
+    </div>
+</div>
