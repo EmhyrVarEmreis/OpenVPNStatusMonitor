@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://vpn.morecraft.pl/",
+    "changeOrigin": true,
+    "secure": false
+  }
+}

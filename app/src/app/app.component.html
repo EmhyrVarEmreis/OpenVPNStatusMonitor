@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="page-header">
+    <h1>MCHS Gamilon
+      <small>OpenVPN Monitor</small>
+    </h1>
+  </div>
+  <div class="panel-last-row">
+    <div class="col-sm-12">
+      <ng-table [config]="config.sorting"
+                (tableChanged)="onChangeTable(config)"
+                [rows]="rows" [columns]="columns">
+      </ng-table>
+    </div>
+  </div>
+  <div class="panel-last-row">
+    <div class="col-sm-12">
+      <button type="button" class="btn btn-success">
+        Turn Auto-Reload
+      </button>
+      <button type="button" class="btn btn-primary">Reload</button>
+    </div>
+  </div>
+</div>
