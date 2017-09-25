@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {DataService} from "./service/data.service";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-root',
@@ -6,47 +8,59 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+  constructor(private dataService: DataService) {
+    this.length = this.data.length;
+  }
+
   public rows: Array<any> = [];
   public columns: Array<any> = [
-    {title: 'Name', name: 'name', filtering: {filterString: '', placeholder: 'Filter by name'}},
     {
-      title: 'Position',
-      name: 'position',
-      sort: false,
-      filtering: {filterString: '', placeholder: 'Filter by position'}
+      title: 'Name',
+      name: 'name',
+      // filtering: {filterString: '', placeholder: 'Filter by name'}
     },
-    {title: 'Office', className: ['office-header', 'text-success'], name: 'office', sort: 'asc'},
-    {title: 'Extn.', name: 'ext', sort: '', filtering: {filterString: '', placeholder: 'Filter by extn.'}},
-    {title: 'Start date', className: 'text-warning', name: 'startDate'},
-    {title: 'Salary ($)', name: 'salary'}
+    {
+      title: 'IP Virtual',
+      name: 'ipVirtual',
+      // filtering: {filterString: '', placeholder: 'Filter by virtual IP'}
+    },
+    {
+      title: 'IP Real',
+      name: 'ipReal',
+      // filtering: {filterString: '', placeholder: 'Filter by real IP'}
+    },
+    {
+      title: 'Bytes Sent',
+      name: 'bytesSent'
+    },
+    {
+      title: 'Bytes Recveived',
+      name: 'bytesReceived'
+    },
+    {
+      title: 'Connected Since',
+      name: 'connectedSince',
+      // filtering: {filterString: '', placeholder: 'Filter by date of first connection'}
+    },
+    {
+      title: 'Last Refresh',
+      name: 'lastRefresh',
+      // filtering: {filterString: '', placeholder: 'Filter by date of last refresh'}
+    }
   ];
-  public page: number = 1;
-  public itemsPerPage: number = 10;
-  public maxSize: number = 5;
-  public numPages: number = 1;
   public length: number = 0;
 
   public config: any = {
-    paging: false,
     sorting: {columns: this.columns},
     filtering: {filterString: ''},
-    className: ['table-striped', 'table-bordered']
+    className: ['table', 'table-condensed', 'table-striped', 'table-bordered']
   };
 
   private data: Array<any> = [];
 
-  public constructor() {
-    this.length = this.data.length;
-  }
-
   public ngOnInit(): void {
-    this.onChangeTable(this.config);
-  }
-
-  public changePage(page: any, data: Array<any> = this.data): Array<any> {
-    let start = (page.page - 1) * page.itemsPerPage;
-    let end = page.itemsPerPage > -1 ? (start + page.itemsPerPage) : data.length;
-    return data.slice(start, end);
+    this.reloadData();
   }
 
   public changeSort(data: any, config: any): any {
@@ -85,7 +99,7 @@ export class AppComponent implements OnInit {
     this.columns.forEach((column: any) => {
       if (column.filtering) {
         filteredData = filteredData.filter((item: any) => {
-          return item[column.name].match(column.filtering.filterString);
+          return (item[column.name] + '').match(column.filtering.filterString);
         });
       }
     });
@@ -116,7 +130,7 @@ export class AppComponent implements OnInit {
     return filteredData;
   }
 
-  public onChangeTable(config: any, page: any = {page: this.page, itemsPerPage: this.itemsPerPage}): any {
+  public onChangeTable(config: any): any {
     if (config.filtering) {
       Object.assign(this.config.filtering, config.filtering);
     }
@@ -125,16 +139,22 @@ export class AppComponent implements OnInit {
       Object.assign(this.config.sorting, config.sorting);
     }
 
-    this.data = [];
-
     let filteredData = this.changeFilter(this.data, this.config);
     let sortedData = this.changeSort(filteredData, this.config);
-    this.rows = page && config.paging ? this.changePage(page, sortedData) : sortedData;
+    this.rows = sortedData;
     this.length = sortedData.length;
   }
 
-  public onCellClick(data: any): any {
-    console.log(data);
+  public reloadData(): Subscription {
+    return this.dataService.getVPNClients().subscribe(
+      vpnClients => {
+        this.data = vpnClients;
+        this.length = this.data.length;
+        this.onChangeTable(this.config);
+      },
+      err => {
+        console.log(err);
+      });
   }
 
 }

@@ -4,6 +4,8 @@ import {NgModule} from '@angular/core';
 import {NG_TABLE_DIRECTIVES} from 'ng2-table/ng2-table';
 
 import {AppComponent} from './app.component';
+import {DataService} from "./service/data.service";
+import {HttpModule, JsonpModule} from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -11,9 +13,13 @@ import {AppComponent} from './app.component';
     NG_TABLE_DIRECTIVES
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpModule,
+    JsonpModule
   ],
-  providers: [],
+  providers: [
+    DataService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
